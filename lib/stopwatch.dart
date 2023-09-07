@@ -53,14 +53,18 @@ class _StopWatchState extends State<StopWatch> {
   @override
   Widget build(BuildContext context) {
     Widget buildLapDisplay() {
-      return ListView(
-        physics: BouncingScrollPhysics(),
-        children: [
-          for (int milliseconds in laps)
-            ListTile(
-              title: Text(secondsText(milliseconds)),
-            )
-        ],
+      return Scrollbar(
+        child: ListView.builder(
+            itemCount: laps.length,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              final milliseconds = laps[index];
+              return ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 50),
+                title: Text("Lap ${index + 1}"),
+                trailing: Text(secondsText(milliseconds)),
+              );
+            }),
       );
     }
 
@@ -72,7 +76,7 @@ class _StopWatchState extends State<StopWatch> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text("Stopwatch")),
+        title: const Center(child: Text("Stopwatch")),
       ),
       body: Column(
         children: [
@@ -127,11 +131,11 @@ class _StopWatchState extends State<StopWatch> {
         const SizedBox(width: 30),
         ElevatedButton(
           onPressed: isTicking ? lap : null,
-          child: Text('Lap'),
+          child: const Text('Lap'),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.yellow)),
         ),
-        SizedBox(
+        const SizedBox(
           width: 20,
         ),
         TextButton(
