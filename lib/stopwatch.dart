@@ -10,7 +10,7 @@ class StopWatch extends StatefulWidget {
 }
 
 class _StopWatchState extends State<StopWatch> {
-  late int seconds;
+  int? seconds;
   Timer? timer;
   @override
   void initState() {
@@ -18,24 +18,32 @@ class _StopWatchState extends State<StopWatch> {
     super.initState();
 
     seconds = 0;
-    timer = Timer.periodic(Duration(seconds: 1), _onTick);
+    timer = Timer.periodic(const Duration(seconds: 1), _onTick);
   }
 
   void _onTick(Timer timer) {
     setState(() {
-      ++seconds;
+      seconds = (seconds! + 1);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    String secondsText() => seconds == 1 ? 'second' : 'seconds';
+
+    @override
+    void dispose() {
+      timer?.cancel();
+      super.dispose();
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Stopwatch"),
+        title: const Text("Stopwatch"),
       ),
       body: Center(
         child: Text(
-          "0 seconds",
+          "$seconds ${secondsText()}",
           style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
