@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class StopWatch extends StatefulWidget {
-  final String name;
-  final String email;
-  const StopWatch({super.key, required this.name, required this.email});
+  static const route = '/stopwatch';
+  final String? name;
+  final String? email;
+  const StopWatch({super.key, this.name, this.email});
 
   @override
   State<StopWatch> createState() => _StopWatchState();
@@ -89,7 +90,7 @@ class _StopWatchState extends State<StopWatch> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.name),
+        title: Text("StopWatch"),
       ),
       body: Column(
         children: [

@@ -13,12 +13,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/': (context) => LoginScreen(),
+        LoginScreen.route: (context) => LoginScreen(),
+        StopWatch.route: (context) => StopWatch(),
+      },
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      //home: LoginScreen(),
     );
   }
 }
