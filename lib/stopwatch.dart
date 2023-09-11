@@ -42,19 +42,40 @@ class _StopWatchState extends State<StopWatch> {
     return "$seconds seconds";
   }
 
-  void stopTimer() {
+  void stopTimer(BuildContext context) {
     timer?.cancel();
     setState(() {
       isTicking = false;
     });
+    final controller =
+        showBottomSheet(context: context, builder: buildRuntimeCompleteSheet);
 
+    Future.delayed(Duration(seconds: 5)).then((_) => controller.close());
+  }
+
+  Widget buildRuntimeCompleteSheet(BuildContext context) {
     final totalRuntime =
         laps.fold<int>(milliseconds, (total, lap) => total + lap as int);
-    final alert = PlatformAlert(
-        title: "Run Completed",
-        message: "Total Run Time is ${secondsText(totalRuntime)}.");
+    // final alert = PlatformAlert(
+    //     title: "Run Completed",
+    //     message: "Total Run Time is ${secondsText(totalRuntime)}.");
 
-    alert.show(context);
+    final textTheme = Theme.of(context).textTheme;
+    return SafeArea(
+        child: Container(
+      color: Theme.of(context).cardColor,
+      width: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 30),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Run Finished", style: textTheme.headlineMedium),
+            Text("Total Run Time is ${secondsText(totalRuntime)}.")
+          ],
+        ),
+      ),
+    ));
   }
 
   //Lap method
@@ -162,12 +183,14 @@ class _StopWatchState extends State<StopWatch> {
         const SizedBox(
           width: 20,
         ),
-        TextButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-                foregroundColor: MaterialStateProperty.all(Colors.white)),
-            onPressed: isTicking ? stopTimer : null,
-            child: const Text('Stop'))
+        Builder(builder: (context) {
+          return TextButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                  foregroundColor: MaterialStateProperty.all(Colors.white)),
+              onPressed: isTicking ? () => stopTimer(context) : null,
+              child: const Text('Stop'));
+        })
       ],
     );
   }
