@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch/stopwatch.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,11 +10,23 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool loggedIn = false;
-  String? name;
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  void validate() {
+    final form = formKey.currentState;
+    // if (form!.validate()) {
+    //   return;
+    // }
+
+    final name = nameController.text;
+    final email = emailController.text;
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => StopWatch(name: name, email: email)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,35 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
         title: const Text("Login"),
       ),
       body: Center(
-        child: loggedIn ? buildSuccess() : buildLoginForm(),
+        child: buildLoginForm(),
       ),
     );
   }
 
-  Widget buildSuccess() {
-    return Column(
-      children: [
-        const Icon(
-          Icons.check,
-          color: Colors.deepOrangeAccent,
-        ),
-        Text("Hello $name"),
-      ],
-    );
-  }
-
   Widget buildLoginForm() {
-    void validate() {
-      final form = formKey.currentContext;
-      if (form?.validate()) {
-        return;
-      }
-      setState(() {
-        loggedIn = true;
-        name = nameController.text;
-      });
-    }
-
     return Form(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -79,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 return null;
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(onPressed: validate, child: Text("Continue"))
           ],
         ),
