@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:stopwatch/platform_alert.dart';
 
 class StopWatch extends StatefulWidget {
   static const route = '/stopwatch';
@@ -50,7 +49,7 @@ class _StopWatchState extends State<StopWatch> {
     final controller =
         showBottomSheet(context: context, builder: buildRuntimeCompleteSheet);
 
-    Future.delayed(Duration(seconds: 5)).then((_) => controller.close());
+    Future.delayed(const Duration(seconds: 5)).then((_) => controller.close());
   }
 
   Widget buildRuntimeCompleteSheet(BuildContext context) {
@@ -66,7 +65,7 @@ class _StopWatchState extends State<StopWatch> {
       color: Theme.of(context).cardColor,
       width: double.infinity,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 30),
+        padding: const EdgeInsets.symmetric(vertical: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -176,9 +175,9 @@ class _StopWatchState extends State<StopWatch> {
         const SizedBox(width: 30),
         ElevatedButton(
           onPressed: isTicking ? lap : null,
-          child: const Text('Lap'),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.yellow)),
+          child: const Text('Lap'),
         ),
         const SizedBox(
           width: 20,
